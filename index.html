@@ -1,1917 +1,1055 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-HK">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" id="themeColorMeta" content="#121614" />
+<title>Morning Routine</title>
+<style>
+  :root {
+    --bg: #ebe3d5;
+    --card: rgba(255, 255, 255, 0.58);
+    --card-border: rgba(58, 46, 34, 0.10);
+    --text: #2f251b;
+    --muted: rgba(47, 37, 27, 0.58);
+    --pill: rgba(47, 37, 27, 0.08);
+    --pill-hover: rgba(47, 37, 27, 0.14);
+    --accent: #2f251b;
+    --accent-text: #ffffff;
+    --active-bg: rgba(220, 38, 38, 0.11);
+    --active-bar: #dc2626;
+    --done-text: rgba(47, 37, 27, 0.36);
+  }
 
-  <!-- Apple iPad & iPhone Web App Fullscreen Support -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Routine StandBy" />
-  <meta name="theme-color" content="#E6DDD0" id="theme-color-meta" />
+  body.theme-sage {
+    --bg: #d7e3d4;
+    --card: rgba(255, 255, 255, 0.50);
+    --card-border: rgba(26, 46, 34, 0.10);
+    --text: #1a2e22;
+    --muted: rgba(26, 46, 34, 0.60);
+    --pill: rgba(26, 46, 34, 0.08);
+    --pill-hover: rgba(26, 46, 34, 0.14);
+    --accent: #2d5a3f;
+    --accent-text: #ffffff;
+  }
 
-  <title>StandBy — Live Morning Routine Tracker</title>
+  body.theme-sky {
+    --bg: #d6e4ee;
+    --card: rgba(255, 255, 255, 0.52);
+    --card-border: rgba(24, 46, 64, 0.10);
+    --text: #182e40;
+    --muted: rgba(24, 46, 64, 0.60);
+    --pill: rgba(24, 46, 64, 0.08);
+    --pill-hover: rgba(24, 46, 64, 0.14);
+    --accent: #255378;
+    --accent-text: #ffffff;
+  }
 
-  <style>
-    /* ==========================================================================
-       1. DESIGN TOKENS & THEMES (Restored Original Warm Sand & Sage Palette)
-       ========================================================================== */
-    :root {
-      /* Default Theme: Warm Sand (Matches your screenshot) */
-      --bg-start: #EAE2D6;
-      --bg-end: #DFD5C6;
-      --card-bg: rgba(255, 253, 249, 0.72);
-      --card-border: rgba(43, 36, 29, 0.11);
-      --text-primary: #26201A;
-      --text-secondary: rgba(38, 32, 26, 0.62);
-      --text-muted: rgba(38, 32, 26, 0.42);
-      --pill-bg: #FFFFFF;
-      --pill-border: rgba(38, 32, 26, 0.14);
-      --pill-text: #26201A;
-      --active-row-bg: rgba(220, 38, 38, 0.13);
-      --active-row-border: #D92D20;
-      --active-text: #B42318;
-      --clock-hand: #26201A;
-      --clock-second: #D92D20;
-      --btn-bg: rgba(38, 32, 26, 0.07);
-      --btn-hover: rgba(38, 32, 26, 0.13);
-      --shadow-soft: 0 8px 24px rgba(38, 32, 26, 0.07);
-    }
+  body.theme-dark {
+    --bg: #111312;
+    --card: #1c1f1e;
+    --card-border: rgba(255, 255, 255, 0.09);
+    --text: #f2f4f3;
+    --muted: rgba(242, 244, 243, 0.55);
+    --pill: rgba(255, 255, 255, 0.09);
+    --pill-hover: rgba(255, 255, 255, 0.15);
+    --accent: #f2f4f3;
+    --accent-text: #111312;
+    --active-bg: rgba(239, 68, 68, 0.22);
+    --active-bar: #f87171;
+    --done-text: rgba(242, 244, 243, 0.34);
+  }
 
-    /* Theme 2: Sage Green */
-    [data-theme="sage"] {
-      --bg-start: #C5DBC6;
-      --bg-end: #B4CEB5;
-      --card-bg: rgba(255, 255, 255, 0.66);
-      --card-border: rgba(23, 40, 25, 0.12);
-      --text-primary: #172819;
-      --text-secondary: rgba(23, 40, 25, 0.64);
-      --text-muted: rgba(23, 40, 25, 0.42);
-      --pill-bg: rgba(255, 255, 255, 0.85);
-      --pill-border: rgba(23, 40, 25, 0.14);
-      --pill-text: #172819;
-      --active-row-bg: rgba(220, 38, 38, 0.13);
-      --active-row-border: #DC2626;
-      --active-text: #991B1B;
-      --clock-hand: #172819;
-      --clock-second: #DC2626;
-      --btn-bg: rgba(23, 40, 25, 0.08);
-      --btn-hover: rgba(23, 40, 25, 0.15);
-      --shadow-soft: 0 8px 24px rgba(23, 40, 25, 0.08);
-    }
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+  }
 
-    /* Theme 3: Soft Sky */
-    [data-theme="sky"] {
-      --bg-start: #C8D9E8;
-      --bg-end: #B7CCE0;
-      --card-bg: rgba(255, 255, 255, 0.68);
-      --card-border: rgba(21, 37, 54, 0.12);
-      --text-primary: #152536;
-      --text-secondary: rgba(21, 37, 54, 0.64);
-      --text-muted: rgba(21, 37, 54, 0.42);
-      --pill-bg: rgba(255, 255, 255, 0.85);
-      --pill-border: rgba(21, 37, 54, 0.14);
-      --pill-text: #152536;
-      --active-row-bg: rgba(220, 38, 38, 0.13);
-      --active-row-border: #DC2626;
-      --active-text: #991B1B;
-      --clock-hand: #152536;
-      --clock-second: #DC2626;
-      --btn-bg: rgba(21, 37, 54, 0.08);
-      --btn-hover: rgba(21, 37, 54, 0.15);
-      --shadow-soft: 0 8px 24px rgba(21, 37, 54, 0.08);
-    }
+  html {
+    background: var(--bg);
+    height: 100%;
+    width: 100%;
+  }
 
-    /* Theme 4: Midnight Dark (Night StandBy Mode) */
-    [data-theme="midnight"] {
-      --bg-start: #121513;
-      --bg-end: #0B0D0C;
-      --card-bg: rgba(28, 33, 30, 0.88);
-      --card-border: rgba(255, 255, 255, 0.11);
-      --text-primary: #F1F5F2;
-      --text-secondary: rgba(241, 245, 242, 0.62);
-      --text-muted: rgba(241, 245, 242, 0.36);
-      --pill-bg: rgba(255, 255, 255, 0.11);
-      --pill-border: rgba(255, 255, 255, 0.16);
-      --pill-text: #F1F5F2;
-      --active-row-bg: rgba(239, 68, 68, 0.22);
-      --active-row-border: #F87171;
-      --active-text: #FCA5A5;
-      --clock-hand: #F1F5F2;
-      --clock-second: #F87171;
-      --btn-bg: rgba(255, 255, 255, 0.09);
-      --btn-hover: rgba(255, 255, 255, 0.16);
-      --shadow-soft: 0 14px 36px rgba(0, 0, 0, 0.45);
-    }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "Noto Sans TC", sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+    user-select: none;
+    position: fixed;
+    inset: 0;
+  }
 
-    /* ==========================================================================
-       2. RESET & ADAPTIVE LAYOUT (iPad Two-Column & iPhone One-Screen Stacked)
-       ========================================================================== */
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+  .app {
+    height: 100%;
+    width: 100%;
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100dvh;
-      overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang HK", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: linear-gradient(150deg, var(--bg-start) 0%, var(--bg-end) 100%);
-      color: var(--text-primary);
-      transition: background 0.4s ease, color 0.3s ease;
-    }
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
 
-    .app-shell {
-      width: 100%;
-      height: 100dvh;
-      padding-top: max(env(safe-area-inset-top), 14px);
-      padding-bottom: max(env(safe-area-inset-bottom), 14px);
-      padding-left: max(env(safe-area-inset-left), 18px);
-      padding-right: max(env(safe-area-inset-right), 18px);
+  /* Top Card */
+  .top-panel {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .date-str {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .chip {
+    background: var(--pill);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 4px 9px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .chip.active {
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: transparent;
+  }
+
+  .chip.wake-active {
+    background: rgba(234, 179, 8, 0.20);
+    border-color: rgba(234, 179, 8, 0.40);
+  }
+
+  .clock-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .clock-digits {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .clock-ampm {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* Red Status Card */
+  .status-card {
+    background: var(--active-bg);
+    border-left: 4px solid var(--active-bar);
+    border-radius: 14px;
+    padding: 9px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .status-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--active-bar);
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--active-bar);
+    margin-right: 4px;
+  }
+
+  .status-range {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-title {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .status-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 1px;
+  }
+
+  .status-rem {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--active-bar);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .status-next {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: rgba(128, 128, 128, 0.22);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--active-bar);
+    width: 0%;
+    transition: width 0.4s linear;
+  }
+
+  /* Wake Row & Buttons */
+  .wake-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2px;
+  }
+
+  .wake-label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .time-pill {
+    background: var(--pill);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 4px 10px;
+    font-size: 15px;
+    font-weight: 800;
+    font-family: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .action-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .action-btn {
+    background: var(--pill);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* Bottom Card: Schedule */
+  .bottom-panel {
+    flex: 1;
+    min-height: 0;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  .list-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .tabs-scroll {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs-scroll::-webkit-scrollbar { display: none; }
+
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 48px 78px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    padding: 2px 8px;
+    border-bottom: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+  .col-headers span:nth-child(2),
+  .col-headers span:nth-child(3) {
+    text-align: right;
+  }
+
+  .rows-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .task-row {
+    display: grid;
+    grid-template-columns: 1fr 48px 78px;
+    align-items: center;
+    padding: 0 8px;
+    border-radius: 8px;
+    border-left: 3.5px solid transparent;
+    font-size: 13.5px;
+    font-weight: 600;
+    flex: 1;
+    min-height: 0;
+    cursor: pointer;
+  }
+
+  .task-row.done {
+    color: var(--done-text);
+  }
+
+  .task-row.done .task-title-text {
+    text-decoration: line-through;
+  }
+
+  .task-row.active {
+    background: var(--active-bg);
+    border-left-color: var(--active-bar);
+    color: var(--active-bar);
+    font-weight: 800;
+  }
+
+  .task-name-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 6px;
+  }
+
+  .task-mins-cell, .task-time-cell {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .task-mins-cell {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .task-row.active .task-mins-cell {
+    color: var(--active-bar);
+  }
+
+  .leave-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 5px;
+    border-top: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+
+  .leave-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .total-badge {
+    background: var(--pill);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  /* iPad Landscape Split */
+  @media (min-width: 768px) {
+    .app {
       display: grid;
-      grid-template-columns: minmax(290px, 0.94fr) minmax(350px, 1.16fr);
-      gap: 16px;
+      grid-template-columns: 38% 1fr;
+      gap: 14px;
+      padding: max(16px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
     }
-
-    .panel {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      padding: 18px 22px;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      min-width: 0;
-    }
-
-    /* ==========================================================================
-       3. LEFT / TOP PANEL: DATE, CONTROLS, LIVE CLOCK, ACTIVE STATUS BAR & WAKE
-       ========================================================================== */
-    .left-panel {
+    .top-panel {
       justify-content: space-between;
-      gap: 10px;
     }
-
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .date-badge {
-      font-size: clamp(0.88rem, 1.4vw, 1.05rem);
-      font-weight: 800;
-      color: var(--text-secondary);
-      letter-spacing: -0.01em;
-      white-space: nowrap;
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: nowrap;
-      justify-content: flex-end;
-    }
-
-    .icon-btn {
-      border: 1px solid var(--card-border);
-      background: var(--btn-bg);
-      color: var(--text-primary);
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: clamp(0.72rem, 1.1vw, 0.82rem);
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      transition: background 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
-    }
-
-    .icon-btn:hover {
-      background: var(--btn-hover);
-    }
-
-    .icon-btn:active {
-      transform: scale(0.96);
-    }
-
-    .icon-btn.active-wake {
-      background: rgba(234, 179, 8, 0.2);
-      border-color: rgba(202, 138, 4, 0.45);
-    }
-
-    .icon-btn.active-voice {
-      background: var(--active-row-bg);
-      border-color: rgba(220, 38, 38, 0.35);
-      color: var(--active-text);
-    }
-
-    /* Clock Row (Analog + Digital) */
-    .clock-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .digital-time-wrap {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .digital-clock {
-      font-size: clamp(2.1rem, 4.4vw, 3.8rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .digital-ampm {
-      font-size: clamp(0.75rem, 1.1vw, 0.9rem);
-      font-weight: 800;
-      color: var(--text-secondary);
-      margin-top: 3px;
-      letter-spacing: 0.03em;
-    }
-
-    .mini-analog {
-      width: clamp(64px, 9.5vw, 110px);
-      height: clamp(64px, 9.5vw, 110px);
-      flex-shrink: 0;
-    }
-
-    /* Restored Active Status Bar Card ("● 現在應該做 (7/10)" + Progress Bar) */
-    .now-card {
-      background: var(--active-row-bg);
-      border-left: 6px solid var(--active-row-border);
-      border-radius: 16px;
-      padding: clamp(10px, 1.6vh, 15px) clamp(12px, 1.6vw, 16px);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
-    }
-
-    .now-card.idle-state {
-      background: var(--btn-bg);
-      border-left-color: var(--text-secondary);
-    }
-
-    .now-label-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: clamp(0.72rem, 1.05vw, 0.82rem);
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: var(--active-text);
-      gap: 6px;
-    }
-
-    .now-card.idle-state .now-label-row {
-      color: var(--text-secondary);
-    }
-
-    .pulse-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--active-row-border);
-      margin-right: 5px;
-      vertical-align: middle;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.82); }
-    }
-
-    .now-task-title {
-      font-size: clamp(1.25rem, 2.4vw, 2rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .now-meta-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .now-countdown {
-      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
-      color: var(--active-text);
-      white-space: nowrap;
-    }
-
-    .now-card.idle-state .now-countdown {
-      color: var(--text-primary);
-    }
-
-    .now-next-hint {
-      font-size: clamp(0.74rem, 1.1vw, 0.86rem);
-      font-weight: 700;
-      color: var(--text-secondary);
-      text-align: right;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 5px;
-      background: rgba(0, 0, 0, 0.09);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 3px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--active-row-border);
-      border-radius: 999px;
-      transition: width 0.4s linear;
-    }
-
-    /* Wake-Up Time & Quick Controls Box */
-    .wakeup-control-box {
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .wakeup-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .wakeup-label {
-      font-size: clamp(0.92rem, 1.4vw, 1.08rem);
-      font-weight: 800;
-    }
-
-    .subtle-time-input {
-      background: var(--pill-bg);
-      color: var(--pill-text);
-      border: 1px solid var(--pill-border);
-      border-radius: 12px;
-      padding: 5px 12px;
-      font-size: clamp(0.95rem, 1.4vw, 1.12rem);
-      font-weight: 800;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .subtle-time-input:hover {
-      background: var(--btn-hover);
-    }
-
-    .quick-demo-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .demo-btn {
-      flex: 1;
-      border: 1px solid var(--card-border);
-      background: var(--btn-bg);
-      color: var(--text-primary);
-      padding: 7px 10px;
-      border-radius: 12px;
-      font-size: clamp(0.75rem, 1.05vw, 0.84rem);
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.2s ease, transform 0.1s ease;
-    }
-
-    .demo-btn:hover {
-      background: var(--btn-hover);
-    }
-
-    .demo-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* ==========================================================================
-       4. RIGHT / BOTTOM PANEL: ROUTINE SCHEDULE TABLE
-       ========================================================================== */
-    .right-panel {
-      justify-content: space-between;
-      gap: 6px;
-    }
-
-    .table-header-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 5px;
-      border-bottom: 1px solid var(--card-border);
-      flex-shrink: 0;
-      gap: 6px;
-    }
-
-    .table-cols-head {
-      display: grid;
-      grid-template-columns: 1fr 56px 96px;
-      align-items: center;
-      padding: 3px 10px 2px 14px;
-      font-size: clamp(0.75rem, 1.1vw, 0.88rem);
-      font-weight: 800;
-      color: var(--text-secondary);
-      flex-shrink: 0;
-    }
-
-    .col-right {
-      text-align: right;
-    }
-
-    .routine-list {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 2px;
-      padding-right: 2px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Individual Task Row */
-    .task-row {
-      display: grid;
-      grid-template-columns: 1fr 56px 96px;
-      align-items: center;
-      padding: clamp(4px, 0.85vh, 9px) 10px;
-      border-radius: 10px;
-      border-left: 5px solid transparent;
-      font-size: clamp(0.86rem, 1.45vw, 1.1rem);
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
-    }
-
-    .task-row:hover {
-      background: var(--btn-bg);
-    }
-
-    /* Active Highlight Row */
-    .task-row.is-current {
-      background: var(--active-row-bg);
-      border-left: 5px solid var(--active-row-border);
-      font-weight: 800;
-      color: var(--active-text);
-    }
-
-    /* Completed Task Row */
-    .task-row.is-done {
-      color: var(--text-muted);
-    }
-
-    .task-row.is-done .task-name-text {
-      text-decoration: line-through;
-    }
-
-    .task-name-cell {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      min-width: 0;
-    }
-
-    .status-check {
-      font-size: 0.85em;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .task-name-text {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .task-mins-cell, .task-time-cell {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    /* Leave Home Footer Row ("出門時間") */
-    .leave-footer {
-      border-top: 1px solid var(--card-border);
-      padding-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-left: 8px;
-      padding-right: 2px;
-      flex-shrink: 0;
-    }
-
-    .leave-label {
-      font-size: clamp(0.95rem, 1.4vw, 1.12rem);
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .total-duration-tag {
-      font-size: clamp(0.72rem, 1vw, 0.82rem);
-      font-weight: 700;
-      color: var(--text-secondary);
-      background: var(--btn-bg);
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
-
-    /* List Switcher Bar (平日, 週末, + 新增清單) */
-    .list-switcher-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 3px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      flex-shrink: 0;
-    }
-
-    .list-switcher-bar::-webkit-scrollbar {
-      display: none;
-    }
-
-    .list-pill {
-      border: 1px solid var(--card-border);
-      background: var(--btn-bg);
-      color: var(--text-secondary);
-      border-radius: 999px;
-      padding: 4px 12px;
-      font-size: clamp(0.75rem, 1.05vw, 0.85rem);
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-
-    .list-pill:hover {
-      background: var(--btn-hover);
-      color: var(--text-primary);
-    }
-
-    .list-pill.active {
-      background: var(--text-primary);
-      color: var(--bg-start);
-      border-color: var(--text-primary);
-    }
-
-    .list-pill.add-list-pill {
-      border-style: dashed;
-      color: var(--text-primary);
-    }
-
-    /* Full List & Task Manager Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-      z-index: 90;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s ease;
-    }
-
-    .modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-card {
-      background: var(--card-bg);
-      color: var(--text-primary);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-radius: 22px;
-      width: 100%;
-      max-width: 520px;
-      max-height: 86dvh;
-      display: flex;
-      flex-direction: column;
-      padding: 18px;
-      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.28);
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--card-border);
-      gap: 8px;
-    }
-
-    .modal-body {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 12px 2px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .modal-list-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .inline-edit-input {
-      width: 100%;
-      background: var(--pill-bg);
-      color: var(--text-primary);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 5px 8px;
-      font-size: 0.86rem;
-      font-weight: 700;
-      font-family: inherit;
-    }
-
-    .inline-mins-input {
-      width: 56px;
-      text-align: right;
-    }
-
-    .modal-step-row {
-      display: grid;
-      grid-template-columns: 1fr 62px 58px 28px;
-      align-items: center;
-      gap: 5px;
-      background: var(--btn-bg);
-      padding: 6px 8px;
-      border-radius: 10px;
-    }
-
-    .order-btns {
-      display: flex;
-      gap: 3px;
-    }
-
-    .mini-action-btn {
-      border: 1px solid var(--card-border);
-      background: var(--pill-bg);
-      color: var(--text-primary);
-      border-radius: 7px;
-      width: 26px;
-      height: 26px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .mini-action-btn:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-
-    .delete-step-btn {
-      border: none;
-      background: rgba(239, 68, 68, 0.14);
-      color: #DC2626;
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
-      font-weight: 800;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: auto;
-    }
-
-    .modal-footer {
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    /* ==========================================================================
-       5. IPHONE PORTRAIT ADAPTATION (Matches Your Screenshot Layout 1:1)
-       ========================================================================== */
-    @media (max-width: 767px) {
-      .app-shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        padding-top: max(env(safe-area-inset-top), 10px);
-        padding-bottom: max(env(safe-area-inset-bottom), 10px);
-        padding-left: max(env(safe-area-inset-left), 12px);
-        padding-right: max(env(safe-area-inset-right), 12px);
-        gap: 10px;
-      }
-
-      .panel {
-        border-radius: 22px;
-        padding: 12px 14px;
-      }
-
-      .left-panel {
-        gap: 8px;
-      }
-
-      .mini-analog {
-        display: none;
-      }
-
-      .clock-section {
-        padding: 0;
-      }
-
-      .digital-time-wrap {
-        flex-direction: row;
-        align-items: baseline;
-        gap: 8px;
-      }
-
-      .digital-clock {
-        font-size: 1.95rem;
-      }
-
-      .digital-ampm {
-        margin-top: 0;
-        font-size: 0.78rem;
-      }
-
-      .now-card {
-        padding: 10px 12px;
-        border-radius: 14px;
-        gap: 4px;
-      }
-
-      .now-task-title {
-        font-size: 1.32rem;
-      }
-
-      .now-countdown {
-        font-size: 1.05rem;
-      }
-
-      .now-next-hint {
-        font-size: 0.76rem;
-        max-width: 58%;
-      }
-
-      .progress-track {
-        height: 4.5px;
-      }
-
-      .wakeup-control-box {
-        padding-top: 8px;
-        gap: 8px;
-      }
-
-      .wakeup-label {
-        font-size: 0.92rem;
-      }
-
-      .subtle-time-input {
-        padding: 4px 10px;
-        font-size: 0.92rem;
-      }
-
-      .demo-btn {
-        padding: 6px 8px;
-        font-size: 0.76rem;
-      }
-
-      .right-panel {
-        gap: 4px;
-      }
-
-      .table-header-bar {
-        padding-bottom: 4px;
-      }
-
-      .table-cols-head {
-        grid-template-columns: 1fr 44px 82px;
-        padding: 2px 8px 2px 12px;
-        font-size: 0.74rem;
-      }
-
-      .task-row {
-        grid-template-columns: 1fr 44px 82px;
-        padding: 3.5px 8px;
-        font-size: 0.86rem;
-        border-radius: 8px;
-      }
-
-      .leave-footer {
-        padding-top: 6px;
-        padding-left: 8px;
-        padding-right: 2px;
-      }
-
-      .leave-label {
-        font-size: 0.92rem;
-      }
-
-      .list-pill {
-        padding: 4px 10px;
-        font-size: 0.76rem;
-      }
-    }
-
-    /* Toast Pill */
-    .toast-pill {
-      position: fixed;
-      bottom: max(env(safe-area-inset-bottom), 14px);
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(24, 24, 27, 0.9);
-      color: #FFFFFF;
-      padding: 7px 16px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      z-index: 100;
-      white-space: nowrap;
-    }
-
-    .toast-pill.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  </style>
+    .clock-digits { font-size: 56px; }
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 50;
+  }
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 82dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .edit-row {
+    display: grid;
+    grid-template-columns: 1fr 58px 28px 28px 28px;
+    gap: 4px;
+  }
+
+  .edit-input {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+  }
+
+  .icon-btn {
+    background: var(--pill);
+    border: none;
+    color: var(--text);
+    border-radius: 6px;
+    height: 28px;
+    font-weight: 700;
+  }
+</style>
 </head>
-<body data-theme="sand">
-
-  <main class="app-shell">
-    <!-- ======================================================================
-         TOP / LEFT PANEL: DATE, CONTROLS, CLOCK, STATUS BAR & WAKE-UP TIME
-         ====================================================================== -->
-    <section class="panel left-panel">
-      <!-- Top Date & Quick Controls -->
-      <div class="top-bar">
-        <div id="date-display" class="date-badge">Sun, Nov 15</div>
-        <div class="toolbar-actions">
-          <button id="voice-toggle-btn" class="icon-btn active-voice" type="button" title="Toggle Cantonese Voice & Chime">
-            🔊 粵語提示: 開
-          </button>
-          <button id="test-voice-btn" class="icon-btn" type="button" title="Preview Chime & Cantonese Voice">
-            🔔 試聽
-          </button>
-          <button id="theme-btn" class="icon-btn" type="button" title="Switch Theme">
-            🎨
-          </button>
-          <button id="wakelock-btn" class="icon-btn active-wake" type="button" title="Keep Screen Awake (Prevent Auto-Lock)">
-            🔆
-          </button>
-        </div>
+<body class="theme-dark">
+<div class="app">
+  <!-- Top Panel -->
+  <div class="panel top-panel">
+    <div class="header-row">
+      <span class="date-str" id="dateStr">--</span>
+      <div class="controls-row">
+        <button class="chip active" id="voiceBtn" onclick="toggleVoice()">🔊 粵語提示: 開</button>
+        <button class="chip" onclick="testVoice()">🔔 試聽</button>
+        <button class="chip" onclick="cycleTheme()">🎨</button>
+        <button class="chip wake-active" id="wakeBtn" onclick="requestWake(true)">🔆</button>
       </div>
+    </div>
 
-      <!-- Digital + Analog Clock -->
-      <div class="clock-section">
-        <div class="digital-time-wrap">
-          <div id="digital-clock" class="digital-clock">8:36:59</div>
-          <div id="digital-ampm" class="digital-ampm">AM · LIVE</div>
-        </div>
+    <div class="clock-row">
+      <span class="clock-digits" id="clockDigits">8:58:45</span>
+      <span class="clock-ampm" id="clockAmpm">AM · LIVE</span>
+    </div>
 
-        <!-- Crisp SVG Analog Clock (Shown on iPad & Landscape) -->
-        <svg class="mini-analog" viewBox="0 0 120 120" aria-label="Analog Clock">
-          <circle cx="60" cy="60" r="56" fill="none" stroke="var(--card-border)" stroke-width="2.5" />
-          <g id="analog-ticks"></g>
-          <line id="hand-hour" x1="60" y1="60" x2="60" y2="30" stroke="var(--clock-hand)" stroke-width="3.6" stroke-linecap="round" />
-          <line id="hand-min" x1="60" y1="60" x2="60" y2="18" stroke="var(--clock-hand)" stroke-width="2.6" stroke-linecap="round" />
-          <line id="hand-sec" x1="60" y1="68" x2="60" y2="14" stroke="var(--clock-second)" stroke-width="1.4" stroke-linecap="round" />
-          <circle cx="60" cy="60" r="3.2" fill="var(--clock-hand)" />
-        </svg>
+    <div class="status-card">
+      <div class="status-top">
+        <span><span class="status-dot"></span><span id="statusStepLabel">現在應該做 (1/10)</span></span>
+        <span class="status-range" id="statusRange">--</span>
       </div>
-
-      <!-- Restored Active Status Bar Card ("● 現在應該做 (7/10)") -->
-      <div id="now-card" class="now-card">
-        <div class="now-label-row">
-          <span id="now-status-label"><span class="pulse-dot"></span>現在應該做 (7/10)</span>
-          <span id="now-slot-range">8:35 AM - 8:50 AM</span>
-        </div>
-        <div id="now-task-title" class="now-task-title">吃早餐</div>
-        <div class="now-meta-row">
-          <div id="now-countdown" class="now-countdown">剩餘 13:01</div>
-          <div id="now-next-hint" class="now-next-hint">下一步: 著衣服 (8:50 AM)</div>
-        </div>
-        <div class="progress-track">
-          <div id="now-progress-fill" class="progress-fill"></div>
-        </div>
+      <div class="status-title" id="statusTaskTitle">準備開始</div>
+      <div class="status-bottom">
+        <span class="status-rem" id="statusRem">剩餘 --:--</span>
+        <span class="status-next" id="statusNext">下一步: --</span>
       </div>
-
-      <!-- Wake Up Time Picker ("起床時間") -->
-      <div class="wakeup-control-box">
-        <div class="wakeup-row">
-          <label for="wakeup-input" class="wakeup-label">起床時間</label>
-          <input id="wakeup-input" class="subtle-time-input" type="time" value="08:19" />
-        </div>
-        <div class="quick-demo-row">
-          <button id="start-now-btn" class="demo-btn" type="button" title="Set Wake-Up Time to right now">
-            ▶ 立即開始
-          </button>
-          <button id="demo-mid-btn" class="demo-btn" type="button" title="Simulate being 17 mins into routine">
-            ⚡ 預覽進行中
-          </button>
-        </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
       </div>
-    </section>
+    </div>
 
-    <!-- ======================================================================
-         BOTTOM / RIGHT PANEL: LIVE HIGHLIGHTING ROUTINE SCHEDULE
-         ====================================================================== -->
-    <section class="panel right-panel">
-      <!-- Top Bar with List Switcher & Edit Modal Trigger -->
-      <div class="table-header-bar">
-        <div id="list-switcher-bar" class="list-switcher-bar" role="tablist" aria-label="Routine Lists"></div>
-        <button id="open-editor-btn" class="icon-btn" type="button" title="Edit Lists & Tasks">
-          ✏️ 編輯清單
-        </button>
-      </div>
+    <div class="wake-row">
+      <span class="wake-label">起床時間</span>
+      <input type="time" id="wakeInput" class="time-pill" onchange="onWakeChange()" />
+    </div>
 
-      <!-- Column Headers ("項目", "Mins" & "計劃開始") -->
-      <div id="table-cols-head" class="table-cols-head">
-        <div>項目</div>
-        <div class="col-right">Mins</div>
-        <div class="col-right">計劃開始</div>
-      </div>
-
-      <!-- Dynamic Routine Rows -->
-      <div id="routine-list" class="routine-list"></div>
-
-      <!-- Footer Row ("出門時間" Bidirectional Interactive Time Input) -->
-      <div class="leave-footer">
-        <div class="leave-label">
-          <label for="leave-time-input">出門時間</label>
-          <span id="total-mins-badge" class="total-duration-tag">總計 42 分鐘</span>
-        </div>
-        <input id="leave-time-input" class="subtle-time-input" type="time" value="09:01" title="調整出門時間可自動反推起床時間" />
-      </div>
-    </section>
-  </main>
-
-  <!-- Full Routine List & Step Manager Modal -->
-  <div id="editor-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="editor-modal-title">
-    <div class="modal-card" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 id="editor-modal-title" style="margin:0; font-size:1.05rem; font-weight:800;">管理清單與項目</h3>
-        <button id="close-editor-btn" class="icon-btn" type="button">✓ 完成</button>
-      </div>
-
-      <div class="modal-body">
-        <!-- Rename / Duplicate / Delete Active List -->
-        <div class="modal-list-meta">
-          <input id="modal-list-name-input" type="text" class="inline-edit-input" style="flex:1; min-width:130px; font-weight:800;" placeholder="清單名稱 (例如: 平日)" />
-          <button id="duplicate-list-btn" class="icon-btn" type="button" title="複製此清單">📋 複製</button>
-          <button id="delete-list-btn" class="icon-btn" type="button" style="color:#DC2626;" title="刪除此清單">🗑 刪除</button>
-        </div>
-
-        <div style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); display:flex; justify-content:space-between; padding:0 6px;">
-          <span>項目名稱</span>
-          <span>分鐘 / 排序 / 刪除</span>
-        </div>
-
-        <!-- Editable Tasks inside Modal -->
-        <div id="modal-steps-list" style="display:flex; flex-direction:column; gap:6px;"></div>
-      </div>
-
-      <div class="modal-footer">
-        <button id="modal-add-step-btn" class="demo-btn" type="button">+ 新增項目</button>
-        <button id="modal-new-list-btn" class="demo-btn" type="button">+ 新增空白清單</button>
-        <button id="modal-reset-all-btn" class="demo-btn" type="button">↺ 還原預設</button>
-      </div>
+    <div class="action-pair">
+      <button class="action-btn" onclick="startNow()">▶ 立即開始</button>
+      <button class="action-btn" onclick="runDemo()">⚡ 預覽進行中</button>
     </div>
   </div>
 
-  <!-- Subtle Floating Notification Toast -->
-  <div id="toast" class="toast-pill">Theme Updated</div>
+  <!-- Bottom Panel -->
+  <div class="panel bottom-panel">
+    <div class="list-bar">
+      <div class="tabs-scroll" id="listTabs"></div>
+      <button class="chip" onclick="openEditor()">✏️ 編輯清單</button>
+    </div>
 
-  <script>
-    /**
-     * ==========================================================================
-     * iPad & iPhone StandBy Live Routine Tracker Engine
-     * - Restores the exact status bar ("● 現在應該做"), progress bar, and themes
-     * - Cantonese Voice Announcement ON by default, speaking ONLY item + minutes (no 預計/預備)
-     * - Automatic Screen Wake Lock + silent WebAudio keep-alive for iOS Safari
-     * - Bidirectional Time Calculation (起床時間 ↔ 出門時間) + Unlimited Custom Lists
-     * ==========================================================================
-     */
+    <div class="col-headers">
+      <span>項目</span>
+      <span>Mins</span>
+      <span>計劃開始</span>
+    </div>
 
-    const DEFAULT_WEEKDAY_TASKS = [
-      { id: 101, name: '小便', mins: 3 },
-      { id: 102, name: '刷牙', mins: 3 },
-      { id: 103, name: '洗面', mins: 2 },
-      { id: 104, name: '磅重 + Apple Watch 充電', mins: 2 },
-      { id: 105, name: '面部保養 / 梳頭', mins: 3 },
-      { id: 106, name: '選擇衣服', mins: 3 },
-      { id: 107, name: '吃早餐', mins: 15 },
-      { id: 108, name: '著衣服', mins: 4 },
-      { id: 109, name: '執袋', mins: 4 },
-      { id: 110, name: '著鞋', mins: 3 }
-    ];
+    <div class="rows-wrap" id="rowsWrap"></div>
 
-    const DEFAULT_WEEKEND_TASKS = [
-      { id: 201, name: '小便', mins: 3 },
-      { id: 202, name: '刷牙 / 洗面', mins: 5 },
-      { id: 203, name: '面部保養 / 梳頭', mins: 4 },
-      { id: 204, name: '換運動衫 / 休閒服', mins: 5 },
-      { id: 205, name: '沖咖啡 / 慢食早餐', mins: 25 },
-      { id: 206, name: '執袋', mins: 5 },
-      { id: 207, name: '著鞋', mins: 3 }
-    ];
+    <div class="leave-row">
+      <div class="leave-left">
+        <span>出門時間</span>
+        <span class="total-badge" id="totalBadge">總計 42 分鐘</span>
+      </div>
+      <input type="time" id="leaveInput" class="time-pill" onchange="onLeaveChange()" />
+    </div>
+  </div>
+</div>
 
-    function createDefaultLists() {
-      return [
-        {
-          id: 'list-weekday',
-          name: '平日',
-          wakeTimeStr: '08:19',
-          tasks: JSON.parse(JSON.stringify(DEFAULT_WEEKDAY_TASKS))
-        },
-        {
-          id: 'list-weekend',
-          name: '週末',
-          wakeTimeStr: '09:00',
-          tasks: JSON.parse(JSON.stringify(DEFAULT_WEEKEND_TASKS))
-        }
-      ];
+<!-- Modal -->
+<div class="modal-backdrop" id="editorModal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:800;">
+      <span>編輯清單</span>
+      <button class="chip" onclick="closeEditor()">✕ 關閉</button>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <input type="text" id="listNameInput" class="edit-input" />
+      <button class="chip" onclick="deleteList()" style="color:#dc2626;">🗑 刪除</button>
+    </div>
+    <div class="modal-body" id="editorRows"></div>
+    <div style="display:flex;justify-content:space-between;">
+      <button class="chip" onclick="addStep()">+ 新增項目</button>
+      <button class="chip active" onclick="saveEditor()">✓ 儲存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DEFAULT_LISTS = [
+    {
+      id: 'weekday',
+      name: '平日',
+      wakeMins: 8 * 60 + 28,
+      tasks: [
+        { name: '小便', mins: 3 },
+        { name: '刷牙', mins: 3 },
+        { name: '洗面', mins: 2 },
+        { name: '磅重 + Apple Watch 充電', mins: 2 },
+        { name: '面部保養 / 梳頭', mins: 3 },
+        { name: '選擇衣服', mins: 3 },
+        { name: '吃早餐', mins: 15 },
+        { name: '著衣服', mins: 4 },
+        { name: '執袋', mins: 4 },
+        { name: '著鞋', mins: 3 }
+      ]
+    },
+    {
+      id: 'weekend',
+      name: '週末',
+      wakeMins: 9 * 60,
+      tasks: [
+        { name: '小便 + 磅重', mins: 3 },
+        { name: '刷牙洗面', mins: 5 },
+        { name: '面部保養', mins: 4 },
+        { name: '慢享早餐 + 咖啡', mins: 25 },
+        { name: '換外出服', mins: 5 },
+        { name: '執袋 + 著鞋', mins: 5 }
+      ]
     }
+  ];
 
-    const THEMES = [
-      { id: 'sand', label: 'Warm Sand', color: '#EAE2D6' },
-      { id: 'sage', label: 'Sage Green', color: '#C5DBC6' },
-      { id: 'sky', label: 'Soft Sky', color: '#C8D9E8' },
-      { id: 'midnight', label: 'Midnight Dark', color: '#121513' }
-    ];
+  const THEMES = [
+    { cls: 'theme-dark', color: '#111312' },
+    { cls: '', color: '#ebe3d5' },
+    { cls: 'theme-sage', color: '#d7e3d4' },
+    { cls: 'theme-sky', color: '#d6e4ee' }
+  ];
 
-    function loadInitialState() {
-      let lists = JSON.parse(localStorage.getItem('routine_lists_v3') || 'null');
-      if (!Array.isArray(lists) || lists.length === 0) {
-        lists = createDefaultLists();
+  let state = {
+    lists: JSON.parse(localStorage.getItem('rt_lists_v3')) || DEFAULT_LISTS,
+    activeId: localStorage.getItem('rt_active_v3') || 'weekday',
+    themeIdx: Number(localStorage.getItem('rt_theme_v3') || 0),
+    voiceOn: localStorage.getItem('rt_voice_v3') === null ? true : localStorage.getItem('rt_voice_v3') === 'true',
+    demoSec: null,
+    lastSpokenKey: null
+  };
+
+  let wakeLock = null;
+  let audioCtx = null;
+
+  function save() {
+    localStorage.setItem('rt_lists_v3', JSON.stringify(state.lists));
+    localStorage.setItem('rt_active_v3', state.activeId);
+    localStorage.setItem('rt_theme_v3', state.themeIdx);
+    localStorage.setItem('rt_voice_v3', state.voiceOn);
+  }
+
+  function currentList() {
+    return state.lists.find(l => l.id === state.activeId) || state.lists[0];
+  }
+
+  /* Wake Lock + Silent Audio Unlock */
+  async function requestWake(fromTap = false) {
+    const btn = document.getElementById('wakeBtn');
+    try {
+      if ('wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen');
+        btn.classList.add('wake-active');
+        wakeLock.addEventListener('release', () => btn.classList.remove('wake-active'));
       }
-      let activeListId = localStorage.getItem('routine_active_list_id_v3') || lists[0].id;
-      if (!lists.some(l => l.id === activeListId)) {
-        activeListId = lists[0].id;
-      }
-      // Cantonese voice announcement is ON by default unless explicitly turned off by the user
-      const storedVoice = localStorage.getItem('routine_voice_enabled_v3');
-      const voiceEnabled = storedVoice === null ? true : storedVoice === 'true';
+    } catch (e) {}
 
-      return { lists, activeListId, voiceEnabled };
-    }
-
-    const initialData = loadInitialState();
-
-    const state = {
-      lists: initialData.lists,
-      activeListId: initialData.activeListId,
-      themeIndex: 0,
-      wakeLock: null,
-      voiceEnabled: initialData.voiceEnabled,
-      lastTrackedPhaseKey: null,
-      audioCtx: null,
-      keepAliveStarted: false,
-      cantoneseVoice: null
-    };
-
-    function getActiveList() {
-      return state.lists.find(l => l.id === state.activeListId) || state.lists[0];
-    }
-
-    function saveAllLists() {
-      localStorage.setItem('routine_lists_v3', JSON.stringify(state.lists));
-      localStorage.setItem('routine_active_list_id_v3', state.activeListId);
-    }
-
-    const savedTheme = localStorage.getItem('routine_theme_v3');
-    if (savedTheme) {
-      const idx = THEMES.findIndex(t => t.id === savedTheme);
-      if (idx !== -1) state.themeIndex = idx;
-    }
-
-    // --- Toast Helper ---
-    let toastTimer = null;
-    function showToast(msg) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
-    }
-
-    // ==========================================================================
-    // SCREEN WAKE LOCK & iOS KEEP-ALIVE ENGINE (Prevents iPhone Auto-Lock)
-    // ==========================================================================
-    function startSilentAudioKeepAlive() {
+    if (fromTap) {
       try {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContextClass) return;
-
-        if (!state.audioCtx) {
-          state.audioCtx = new AudioContextClass();
-        }
-        if (state.audioCtx.state === 'suspended') {
-          state.audioCtx.resume();
-        }
-        if (!state.keepAliveStarted) {
-          // Play an inaudible ultra-low gain oscillator to keep Safari media session awake
-          const osc = state.audioCtx.createOscillator();
-          const gain = state.audioCtx.createGain();
-          gain.gain.setValueAtTime(0.00001, state.audioCtx.currentTime);
-          osc.connect(gain);
-          gain.connect(state.audioCtx.destination);
-          osc.start();
-          state.keepAliveStarted = true;
-        }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
       } catch (e) {}
     }
+  }
 
-    async function engageWakeLock(announce = false) {
-      const btn = document.getElementById('wakelock-btn');
-      startSilentAudioKeepAlive();
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') requestWake(false);
+  });
+  document.addEventListener('touchstart', () => requestWake(true), { once: true });
 
-      if (!('wakeLock' in navigator)) {
-        btn.classList.add('active-wake');
-        if (announce) showToast('已啟用防休眠模式');
-        return;
-      }
+  /* Theme + iOS Status Bar Color Sync */
+  function applyTheme() {
+    const t = THEMES[state.themeIdx] || THEMES[0];
+    document.body.className = t.cls;
+    document.documentElement.style.background = t.color;
+    const meta = document.getElementById('themeColorMeta');
+    if (meta) meta.setAttribute('content', t.color);
+  }
 
-      try {
-        if (!state.wakeLock) {
-          state.wakeLock = await navigator.wakeLock.request('screen');
-          state.wakeLock.addEventListener('release', () => {
-            state.wakeLock = null;
-            btn.classList.remove('active-wake');
-          });
-        }
-        btn.classList.add('active-wake');
-        if (announce) showToast('🔆 螢幕常亮已開啟 (防止自動鎖屏)');
-      } catch (err) {
-        btn.classList.remove('active-wake');
-        if (announce) showToast('請輕觸螢幕一次以保持常亮');
-      }
+  function cycleTheme() {
+    state.themeIdx = (state.themeIdx + 1) % THEMES.length;
+    save();
+    applyTheme();
+  }
+
+  /* Time Utilities */
+  function minsToInput(m) {
+    const v = ((m % 1440) + 1440) % 1440;
+    return `${String(Math.floor(v / 60)).padStart(2, '0')}:${String(v % 60).padStart(2, '0')}`;
+  }
+
+  function inputToMins(str) {
+    if (!str) return 0;
+    const [h, m] = str.split(':').map(Number);
+    return h * 60 + m;
+  }
+
+  function fmt12(m) {
+    const v = ((m % 1440) + 1440) % 1440;
+    let h = Math.floor(v / 60);
+    const min = String(v % 60).padStart(2, '0');
+    const ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `${h}:${min} ${ap}`;
+  }
+
+  function totalMins(list) {
+    return list.tasks.reduce((s, t) => s + Number(t.mins || 0), 0);
+  }
+
+  function onWakeChange() {
+    state.demoSec = null;
+    state.lastSpokenKey = null;
+    const l = currentList();
+    l.wakeMins = inputToMins(document.getElementById('wakeInput').value);
+    save();
+    render();
+  }
+
+  function onLeaveChange() {
+    state.demoSec = null;
+    state.lastSpokenKey = null;
+    const l = currentList();
+    const leave = inputToMins(document.getElementById('leaveInput').value);
+    l.wakeMins = ((leave - totalMins(l)) % 1440 + 1440) % 1440;
+    save();
+    render();
+  }
+
+  function startNow() {
+    state.demoSec = null;
+    state.lastSpokenKey = null;
+    const now = new Date();
+    const l = currentList();
+    l.wakeMins = now.getHours() * 60 + now.getMinutes();
+    save();
+    render();
+  }
+
+  function runDemo() {
+    state.demoSec = 16 * 60 + 45; // Highlights item 7 (吃早餐)
+    state.lastSpokenKey = null;
+    render();
+  }
+
+  /* Chime + Cantonese Speech (No 預備/預計) */
+  function playChime() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      [587.33, 880].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, now + i * 0.15);
+        gain.gain.setValueAtTime(0.16, now + i * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.15);
+        osc.stop(now + i * 0.15 + 0.4);
+      });
+    } catch (e) {}
+  }
+
+  function speakHK(text) {
+    if (!state.voiceOn || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-HK';
+    u.rate = 1.02;
+    const v = window.speechSynthesis.getVoices().find(x => x.lang.includes('zh-HK') || x.lang.includes('yue'));
+    if (v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }
+
+  function announceStep(name, mins) {
+    if (!state.voiceOn) return;
+    playChime();
+    const clean = name.replace(/\//g, '同埋').replace(/\+/g, '同埋');
+    setTimeout(() => speakHK(`下一個項目：${clean}，${mins} 分鐘。`), 320);
+  }
+
+  function toggleVoice() {
+    state.voiceOn = !state.voiceOn;
+    save();
+    updateVoiceUI();
+    if (state.voiceOn) {
+      playChime();
+      speakHK('粵語提示已開啟。');
     }
+  }
 
-    // Re-request Wake Lock automatically when returning to Safari / Home Screen App
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        engageWakeLock(false);
-      }
-    });
-
-    // Automatically unlock audio & engage Wake Lock on first user touch/click anywhere
-    function handleFirstUserInteraction() {
-      engageWakeLock(false);
-      loadCantoneseVoice();
-    }
-    document.addEventListener('touchstart', handleFirstUserInteraction, { once: true, passive: true });
-    document.addEventListener('click', handleFirstUserInteraction, { once: true });
-
-    // ==========================================================================
-    // WEB AUDIO CHIME + CANTONESE (zh-HK) SPEECH SYNTHESIS (NO "預備" / "預計")
-    // ==========================================================================
-    function loadCantoneseVoice() {
-      if (!('speechSynthesis' in window)) return;
-      const voices = window.speechSynthesis.getVoices();
-      state.cantoneseVoice =
-        voices.find(v => v.lang.toLowerCase() === 'zh-hk') ||
-        voices.find(v => v.lang.toLowerCase().includes('hk')) ||
-        voices.find(v => v.name.toLowerCase().includes('cantonese') || v.name.includes('Sin-Ji') || v.name.includes('粵語')) ||
-        null;
-    }
-
-    if ('speechSynthesis' in window) {
-      loadCantoneseVoice();
-      window.speechSynthesis.onvoiceschanged = loadCantoneseVoice;
-    }
-
-    function playGentleChime() {
-      try {
-        startSilentAudioKeepAlive();
-        if (!state.audioCtx) return;
-
-        const ctx = state.audioCtx;
-        const now = ctx.currentTime;
-        const notes = [523.25, 783.99];
-        notes.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + idx * 0.16);
-
-          gain.gain.setValueAtTime(0.001, now + idx * 0.16);
-          gain.gain.exponentialRampToValueAtTime(0.16, now + idx * 0.16 + 0.03);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.16 + 0.55);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(now + idx * 0.16);
-          osc.stop(now + idx * 0.16 + 0.58);
-        });
-      } catch (e) {}
-    }
-
-    function formatTaskNameForCantonese(rawName) {
-      return rawName.replace(/\//g, '同埋').replace(/\+/g, '同埋').trim();
-    }
-
-    function speakCantoneseAnnouncement(text) {
-      if (!('speechSynthesis' in window)) return;
-      try {
+  function testVoice() {
+    const l = currentList();
+    const item = l.tasks[0] || { name: '刷牙', mins: 3 };
+    playChime();
+    const clean = item.name.replace(/\//g, '同埋').replace(/\+/g, '同埋');
+    setTimeout(() => {
+      if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-HK';
-        if (state.cantoneseVoice) {
-          utterance.voice = state.cantoneseVoice;
-        }
-        utterance.rate = 1.02;
-        utterance.pitch = 1.0;
-        utterance.volume = 1.0;
-
-        setTimeout(() => {
-          window.speechSynthesis.speak(utterance);
-        }, 360);
-      } catch (e) {}
-    }
-
-    function triggerStepNotification(taskName, mins, isLeaveHome = false) {
-      playGentleChime();
-      if (isLeaveHome) {
-        speakCantoneseAnnouncement('夠鐘出門啦！');
-      } else {
-        const spokenName = formatTaskNameForCantonese(taskName);
-        // Removed "預備" and "預計" — speaks ONLY the item name and minutes
-        speakCantoneseAnnouncement(`下一個項目：${spokenName}，${mins} 分鐘。`);
+        const u = new SpeechSynthesisUtterance(`下一個項目：${clean}，${item.mins} 分鐘。`);
+        u.lang = 'zh-HK';
+        window.speechSynthesis.speak(u);
       }
-    }
+    }, 320);
+  }
 
-    function updateVoiceToggleUI() {
-      const btn = document.getElementById('voice-toggle-btn');
-      if (state.voiceEnabled) {
-        btn.classList.add('active-voice');
-        btn.textContent = '🔊 粵語提示: 開';
-      } else {
-        btn.classList.remove('active-voice');
-        btn.textContent = '🔇 粵語提示: 關';
-      }
-    }
+  function updateVoiceUI() {
+    const btn = document.getElementById('voiceBtn');
+    btn.textContent = state.voiceOn ? '🔊 粵語提示: 開' : '🔇 粵語提示: 關';
+    btn.classList.toggle('active', state.voiceOn);
+  }
 
-    // --- Time Formatting & Bidirectional Math Helpers ---
-    function parseTimeToSecondsSinceMidnight(hhmm) {
-      const [hStr, mStr] = hhmm.split(':');
-      const h = parseInt(hStr, 10) || 0;
-      const m = parseInt(mStr, 10) || 0;
-      return h * 3600 + m * 60;
-    }
-
-    function secondsToHHMM24(totalSeconds) {
-      const daySec = ((totalSeconds % 86400) + 86400) % 86400;
-      const hrs24 = Math.floor(daySec / 3600);
-      const mins = Math.floor((daySec % 3600) / 60);
-      return `${String(hrs24).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-    }
-
-    function formatSecondsTo12Hour(totalSeconds) {
-      const daySec = ((totalSeconds % 86400) + 86400) % 86400;
-      const hrs24 = Math.floor(daySec / 3600);
-      const mins = Math.floor((daySec % 3600) / 60);
-      const ampm = hrs24 >= 12 ? 'PM' : 'AM';
-      const hrs12 = hrs24 % 12 === 0 ? 12 : hrs24 % 12;
-      return `${hrs12}:${String(mins).padStart(2, '0')} ${ampm}`;
-    }
-
-    function formatDurationMMSS(secondsLeft) {
-      const clamped = Math.max(0, Math.ceil(secondsLeft));
-      const m = Math.floor(clamped / 60);
-      const s = clamped % 60;
-      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-
-    function formatWaitDuration(secondsUntil) {
-      const totalMins = Math.max(1, Math.ceil(secondsUntil / 60));
-      const h = Math.floor(totalMins / 60);
-      const m = totalMins % 60;
-      if (h > 0 && m > 0) return `距離起床仲有 ${h} 小時 ${m} 分鐘`;
-      if (h > 0) return `距離起床仲有 ${h} 小時`;
-      return `距離起床仲有 ${m} 分鐘`;
-    }
-
-    // --- Build Analog Clock Dial Ticks ---
-    function buildAnalogClockTicks() {
-      const group = document.getElementById('analog-ticks');
-      for (let i = 0; i < 12; i++) {
-        const angle = (i * 30 - 90) * (Math.PI / 180);
-        const r1 = 48;
-        const r2 = 53;
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', (60 + r1 * Math.cos(angle)).toFixed(1));
-        line.setAttribute('y1', (60 + r1 * Math.sin(angle)).toFixed(1));
-        line.setAttribute('x2', (60 + r2 * Math.cos(angle)).toFixed(1));
-        line.setAttribute('y2', (60 + r2 * Math.sin(angle)).toFixed(1));
-        line.setAttribute('stroke', 'var(--text-secondary)');
-        line.setAttribute('stroke-width', i % 3 === 0 ? '2.2' : '1.4');
-        line.setAttribute('stroke-linecap', 'round');
-        group.appendChild(line);
-      }
-    }
-
-    // --- Compute Schedule Windows for Active List ---
-    function computeSchedule() {
-      const activeList = getActiveList();
-      const wakeStartSec = parseTimeToSecondsSinceMidnight(activeList.wakeTimeStr);
-      let cursorSec = wakeStartSec;
-      let totalMins = 0;
-
-      const computed = activeList.tasks.map((task, idx) => {
-        const durMins = Math.max(1, parseInt(task.mins, 10) || 1);
-        const startSec = cursorSec;
-        const endSec = cursorSec + durMins * 60;
-        cursorSec = endSec;
-        totalMins += durMins;
-
-        return {
-          ...task,
-          index: idx,
-          mins: durMins,
-          startSec,
-          endSec,
-          startFormatted: formatSecondsTo12Hour(startSec),
-          endFormatted: formatSecondsTo12Hour(endSec)
-        };
-      });
-
-      return {
-        items: computed,
-        wakeStartSec,
-        leaveEndSec: cursorSec,
-        leaveHHMM24: secondsToHHMM24(cursorSec),
-        leaveFormatted: formatSecondsTo12Hour(cursorSec),
-        totalMins
+  /* Render */
+  function renderTabs() {
+    const wrap = document.getElementById('listTabs');
+    wrap.innerHTML = '';
+    state.lists.forEach(l => {
+      const b = document.createElement('button');
+      b.className = 'chip' + (l.id === state.activeId ? ' active' : '');
+      b.textContent = l.name;
+      b.onclick = () => {
+        state.activeId = l.id;
+        state.demoSec = null;
+        state.lastSpokenKey = null;
+        save();
+        render();
       };
+      wrap.appendChild(b);
+    });
+    const add = document.createElement('button');
+    add.className = 'chip';
+    add.textContent = '+ 新增清單';
+    add.onclick = createList;
+    wrap.appendChild(add);
+  }
+
+  function render() {
+    const l = currentList();
+    const tot = totalMins(l);
+    document.getElementById('wakeInput').value = minsToInput(l.wakeMins);
+    document.getElementById('leaveInput').value = minsToInput(l.wakeMins + tot);
+    document.getElementById('totalBadge').textContent = `總計 ${tot} 分鐘`;
+    renderTabs();
+    tick();
+  }
+
+  function tick() {
+    const now = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    document.getElementById('dateStr').textContent = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
+
+    let h = now.getHours();
+    const ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('clockDigits').textContent = `${h}:${mm}:${ss}`;
+    document.getElementById('clockAmpm').textContent = `${ap} · LIVE`;
+
+    const l = currentList();
+    const wakeSec = l.wakeMins * 60;
+    const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    let elapsed = state.demoSec !== null ? state.demoSec : nowSec - wakeSec;
+    if (state.demoSec === null) {
+      if (elapsed < -43200) elapsed += 86400;
+      if (elapsed > 43200) elapsed -= 86400;
     }
 
-    // --- Render List Switcher Tabs (平日, 週末, + Custom Lists) ---
-    function renderListSwitcher() {
-      const bar = document.getElementById('list-switcher-bar');
-      bar.innerHTML = '';
+    const wrap = document.getElementById('rowsWrap');
+    wrap.innerHTML = '';
 
-      state.lists.forEach(list => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'list-pill' + (list.id === state.activeListId ? ' active' : '');
-        btn.textContent = list.name;
-        btn.addEventListener('click', () => {
-          state.activeListId = list.id;
-          state.lastTrackedPhaseKey = null;
-          saveAllLists();
-          renderListSwitcher();
-          renderRoutineTable();
-          showToast(`已切換至「${list.name}」清單`);
-        });
-        bar.appendChild(btn);
-      });
+    let curMins = l.wakeMins;
+    let curSec = 0;
+    let activeIdx = -1;
+    let remSec = 0;
+    let durSecActive = 1;
+    let activeRange = '';
 
-      const addBtn = document.createElement('button');
-      addBtn.type = 'button';
-      addBtn.className = 'list-pill add-list-pill';
-      addBtn.textContent = '+ 新增清單';
-      addBtn.addEventListener('click', () => {
-        createNewCustomList();
-      });
-      bar.appendChild(addBtn);
+    l.tasks.forEach((t, idx) => {
+      const sSec = curSec;
+      const dSec = Number(t.mins) * 60;
+      const eSec = sSec + dSec;
+      const isAct = elapsed >= sSec && elapsed < eSec;
+      const isDone = elapsed >= eSec;
+
+      if (isAct) {
+        activeIdx = idx;
+        remSec = eSec - elapsed;
+        durSecActive = dSec;
+        activeRange = `${fmt12(curMins)} - ${fmt12(curMins + Number(t.mins))}`;
+      }
+
+      const row = document.createElement('div');
+      row.className = 'task-row' + (isAct ? ' active' : isDone ? ' done' : '');
+      const prefix = isDone ? '✓ ' : isAct ? '▶ ' : '';
+      row.innerHTML = `
+        <span class="task-name-cell">${prefix}<span class="task-title-text">${t.name}</span></span>
+        <span class="task-mins-cell">${t.mins}</span>
+        <span class="task-time-cell">${fmt12(curMins)}</span>
+      `;
+      row.onclick = () => announceStep(t.name, t.mins);
+      wrap.appendChild(row);
+
+      curMins += Number(t.mins);
+      curSec = eSec;
+    });
+
+    const stepLbl = document.getElementById('statusStepLabel');
+    const rangeLbl = document.getElementById('statusRange');
+    const titleLbl = document.getElementById('statusTaskTitle');
+    const remLbl = document.getElementById('statusRem');
+    const nextLbl = document.getElementById('statusNext');
+    const fill = document.getElementById('progressFill');
+
+    if (elapsed < 0) {
+      const w = Math.abs(elapsed);
+      stepLbl.textContent = `尚未開始 (共 ${l.tasks.length} 項)`;
+      rangeLbl.textContent = `${fmt12(l.wakeMins)} 開始`;
+      titleLbl.textContent = l.tasks[0] ? l.tasks[0].name : '準備開始';
+      remLbl.textContent = `倒數 ${Math.floor(w / 60)}:${String(w % 60).padStart(2, '0')}`;
+      nextLbl.textContent = `出門: ${fmt12(l.wakeMins + totalMins(l))}`;
+      fill.style.width = '0%';
+    } else if (activeIdx !== -1) {
+      const curTask = l.tasks[activeIdx];
+      const nextTask = l.tasks[activeIdx + 1];
+      const nextStartMins = l.wakeMins + l.tasks.slice(0, activeIdx + 1).reduce((s, x) => s + Number(x.mins), 0);
+
+      stepLbl.textContent = `現在應該做 (${activeIdx + 1}/${l.tasks.length})`;
+      rangeLbl.textContent = activeRange;
+      titleLbl.textContent = curTask.name;
+      remLbl.textContent = `剩餘 ${String(Math.floor(remSec / 60)).padStart(2, '0')}:${String(remSec % 60).padStart(2, '0')}`;
+      nextLbl.textContent = nextTask ? `下一步: ${nextTask.name} (${fmt12(nextStartMins)})` : `下一步: 出門 (${fmt12(nextStartMins)})`;
+      fill.style.width = `${Math.min(100, Math.max(0, ((durSecActive - remSec) / durSecActive) * 100))}%`;
+
+      const key = `${l.id}-${activeIdx}`;
+      if (state.lastSpokenKey !== key) {
+        state.lastSpokenKey = key;
+        announceStep(curTask.name, curTask.mins);
+      }
+    } else {
+      stepLbl.textContent = '全部完成';
+      rangeLbl.textContent = fmt12(l.wakeMins + totalMins(l));
+      titleLbl.textContent = '夠鐘出門啦！';
+      remLbl.textContent = '已完成';
+      nextLbl.textContent = '';
+      fill.style.width = '100%';
     }
+  }
 
-    function createNewCustomList() {
-      const count = state.lists.length + 1;
-      const newList = {
-        id: 'list-' + Date.now(),
-        name: `自訂清單 ${count}`,
-        wakeTimeStr: '08:00',
-        tasks: [
-          { id: Date.now() + 1, name: '小便 / 刷牙洗面', mins: 6 },
-          { id: Date.now() + 2, name: '換衫準備', mins: 5 },
-          { id: Date.now() + 3, name: '吃早餐', mins: 15 },
-          { id: Date.now() + 4, name: '執袋著鞋', mins: 5 }
-        ]
-      };
-      state.lists.push(newList);
-      state.activeListId = newList.id;
-      state.lastTrackedPhaseKey = null;
-      saveAllLists();
-      renderListSwitcher();
-      renderRoutineTable();
-      openEditorModal();
-      showToast(`已新增「${newList.name}」`);
-    }
-
-    // --- Render Routine Table & Sync Bidirectional Time Inputs ---
-    function renderRoutineTable() {
-      const activeList = getActiveList();
-      const listEl = document.getElementById('routine-list');
-      const schedule = computeSchedule();
-
-      document.getElementById('wakeup-input').value = activeList.wakeTimeStr;
-      document.getElementById('leave-time-input').value = schedule.leaveHHMM24;
-      document.getElementById('total-mins-badge').textContent = `總計 ${schedule.totalMins} 分鐘`;
-
-      listEl.innerHTML = '';
-      schedule.items.forEach((item, idx) => {
-        const row = document.createElement('div');
-        row.className = 'task-row';
-        row.dataset.index = idx;
-        row.title = '點擊試聽此項目粵語語音提示';
-        row.innerHTML = `
-          <div class="task-name-cell">
-            <span class="status-check" id="check-${idx}"></span>
-            <span class="task-name-text">${item.name}</span>
-          </div>
-          <div class="task-mins-cell">${item.mins}</div>
-          <div class="task-time-cell">${item.startFormatted}</div>
-        `;
-        row.addEventListener('click', () => {
-          triggerStepNotification(item.name, item.mins, false);
-          showToast(`🔊 試聽：${item.name}，${item.mins} 分鐘`);
-        });
-        listEl.appendChild(row);
-      });
-
-      updateLiveTracking();
-    }
-
-    // --- Real-Time Clock & Live Row Highlighting (Runs Every 250ms) ---
-    function updateLiveTracking() {
-      const now = new Date();
-      const hrs24 = now.getHours();
-      const mins = now.getMinutes();
-      const secs = now.getSeconds();
-      const ms = now.getMilliseconds();
-
-      // 1. Update Date & Digital Clock
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      document.getElementById('date-display').textContent = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}`;
-
-      const hrs12 = hrs24 % 12 === 0 ? 12 : hrs24 % 12;
-      const ampm = hrs24 >= 12 ? 'PM' : 'AM';
-      document.getElementById('digital-clock').textContent =
-        `${hrs12}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-      document.getElementById('digital-ampm').textContent = `${ampm} · LIVE`;
-
-      // 2. Update Analog Clock Hands
-      const secExact = secs + ms / 1000;
-      const minExact = mins + secExact / 60;
-      const hrExact = (hrs24 % 12) + minExact / 60;
-      document.getElementById('hand-sec').setAttribute('transform', `rotate(${(secExact * 6).toFixed(1)} 60 60)`);
-      document.getElementById('hand-min').setAttribute('transform', `rotate(${(minExact * 6).toFixed(1)} 60 60)`);
-      document.getElementById('hand-hour').setAttribute('transform', `rotate(${(hrExact * 30).toFixed(1)} 60 60)`);
-
-      // 3. Determine Current Active Task in Routine
-      const schedule = computeSchedule();
-      let nowSec = hrs24 * 3600 + mins * 60 + secs;
-
-      // Handle routines crossing midnight
-      if (schedule.leaveEndSec > 86400 && nowSec < schedule.wakeStartSec && (nowSec + 86400) <= schedule.leaveEndSec + 3600) {
-        nowSec += 86400;
-      }
-
-      let activeIndex = -1;
-      for (let i = 0; i < schedule.items.length; i++) {
-        const item = schedule.items[i];
-        if (nowSec >= item.startSec && nowSec < item.endSec) {
-          activeIndex = i;
-          break;
-        }
-      }
-
-      // 4. Detect Item Transition & Trigger Chime + Cantonese Voice if Enabled
-      const isModalOpen = document.getElementById('editor-modal').classList.contains('open');
-      const currentPhaseKey = activeIndex !== -1
-        ? `step-${state.activeListId}-${activeIndex}-${schedule.items[activeIndex].name}`
-        : (nowSec < schedule.wakeStartSec ? `waiting-${state.activeListId}` : `done-${state.activeListId}`);
-
-      if (state.lastTrackedPhaseKey !== null && state.lastTrackedPhaseKey !== currentPhaseKey) {
-        if (state.voiceEnabled && !isModalOpen) {
-          if (activeIndex !== -1) {
-            const activeItem = schedule.items[activeIndex];
-            triggerStepNotification(activeItem.name, activeItem.mins, false);
-          } else if (currentPhaseKey.startsWith('done-') && state.lastTrackedPhaseKey.startsWith('step-')) {
-            triggerStepNotification('出門', 0, true);
-          }
-        }
-      }
-      state.lastTrackedPhaseKey = currentPhaseKey;
-
-      // 5. Update Row Highlighting & Checkmarks
-      const rows = document.querySelectorAll('#routine-list .task-row');
-      rows.forEach((row, idx) => {
-        const item = schedule.items[idx];
-        if (!item) return;
-
-        row.classList.remove('is-current', 'is-done');
-        const checkEl = document.getElementById(`check-${idx}`);
-
-        if (idx === activeIndex) {
-          row.classList.add('is-current');
-          if (checkEl) checkEl.textContent = '▶';
-        } else if (nowSec >= item.endSec && nowSec >= schedule.wakeStartSec) {
-          row.classList.add('is-done');
-          if (checkEl) checkEl.textContent = '✓';
-        } else {
-          if (checkEl) checkEl.textContent = '';
-        }
-      });
-
-      // 6. Update Restored Status Bar Card ("● 現在應該做")
-      const nowCard = document.getElementById('now-card');
-      const statusLabel = document.getElementById('now-status-label');
-      const slotRange = document.getElementById('now-slot-range');
-      const taskTitle = document.getElementById('now-task-title');
-      const countdownEl = document.getElementById('now-countdown');
-      const nextHintEl = document.getElementById('now-next-hint');
-      const progressFill = document.getElementById('now-progress-fill');
-
-      if (activeIndex !== -1) {
-        const current = schedule.items[activeIndex];
-        const nextItem = schedule.items[activeIndex + 1];
-        const totalDurationSec = current.endSec - current.startSec;
-        const elapsedSec = nowSec - current.startSec;
-        const remainingSec = current.endSec - nowSec;
-        const pct = Math.min(100, Math.max(0, (elapsedSec / totalDurationSec) * 100));
-
-        nowCard.classList.remove('idle-state');
-        statusLabel.innerHTML = `<span class="pulse-dot"></span>現在應該做 (${activeIndex + 1}/${schedule.items.length})`;
-        slotRange.textContent = `${current.startFormatted} - ${current.endFormatted}`;
-        taskTitle.textContent = current.name;
-        countdownEl.textContent = `剩餘 ${formatDurationMMSS(remainingSec)}`;
-        nextHintEl.textContent = nextItem
-          ? `下一步: ${nextItem.name} (${nextItem.startFormatted})`
-          : `完成後出門 (${schedule.leaveFormatted})`;
-        progressFill.style.width = `${pct.toFixed(1)}%`;
-      } else if (nowSec < schedule.wakeStartSec) {
-        const untilStartSec = schedule.wakeStartSec - nowSec;
-        const firstTask = schedule.items[0];
-        nowCard.classList.add('idle-state');
-        statusLabel.textContent = `等待起床 (${formatSecondsTo12Hour(schedule.wakeStartSec)})`;
-        slotRange.textContent = `出門 ${schedule.leaveFormatted}`;
-        taskTitle.textContent = firstTask ? `首項: ${firstTask.name}` : '準備開始';
-        countdownEl.textContent = untilStartSec <= 3600
-          ? `倒數 ${formatDurationMMSS(untilStartSec)}`
-          : formatWaitDuration(untilStartSec);
-        nextHintEl.textContent = `總計 ${schedule.totalMins} 分鐘`;
-        progressFill.style.width = '0%';
-      } else {
-        nowCard.classList.add('idle-state');
-        statusLabel.textContent = '今日流程已完成 (COMPLETED)';
-        slotRange.textContent = `出門 ${schedule.leaveFormatted}`;
-        taskTitle.textContent = `明日 ${formatSecondsTo12Hour(schedule.wakeStartSec)} 起床`;
-        countdownEl.textContent = '已完成 100%';
-        nextHintEl.textContent = `總計 ${schedule.totalMins} 分鐘`;
-        progressFill.style.width = '100%';
-      }
-    }
-
-    // ==========================================================================
-    // FULL LIST & STEP EDITOR MODAL LOGIC
-    // ==========================================================================
-    function openEditorModal() {
-      renderModalContent();
-      document.getElementById('editor-modal').classList.add('open');
-    }
-
-    function closeEditorModal() {
-      document.getElementById('editor-modal').classList.remove('open');
-      renderListSwitcher();
-      renderRoutineTable();
-    }
-
-    function renderModalContent() {
-      const activeList = getActiveList();
-      const nameInput = document.getElementById('modal-list-name-input');
-      nameInput.value = activeList.name;
-
-      const deleteListBtn = document.getElementById('delete-list-btn');
-      deleteListBtn.disabled = state.lists.length <= 1;
-      deleteListBtn.style.opacity = state.lists.length <= 1 ? '0.4' : '1';
-
-      const container = document.getElementById('modal-steps-list');
-      container.innerHTML = '';
-
-      activeList.tasks.forEach((task, idx) => {
-        const row = document.createElement('div');
-        row.className = 'modal-step-row';
-        row.innerHTML = `
-          <input type="text" class="inline-edit-input" value="${task.name.replace(/"/g, '&quot;')}" data-modal-name="${idx}" />
-          <input type="number" min="1" max="240" class="inline-edit-input inline-mins-input" value="${task.mins}" data-modal-mins="${idx}" />
-          <div class="order-btns">
-            <button type="button" class="mini-action-btn" data-move-up="${idx}" ${idx === 0 ? 'disabled' : ''} title="上移">↑</button>
-            <button type="button" class="mini-action-btn" data-move-down="${idx}" ${idx === activeList.tasks.length - 1 ? 'disabled' : ''} title="下移">↓</button>
-          </div>
-          <button type="button" class="delete-step-btn" data-modal-del="${idx}" title="刪除項目">×</button>
-        `;
-        container.appendChild(row);
-      });
-
-      container.querySelectorAll('input[data-modal-name]').forEach(inp => {
-        inp.addEventListener('input', (e) => {
-          const idx = parseInt(e.target.dataset.modalName, 10);
-          activeList.tasks[idx].name = e.target.value;
-          saveAllLists();
-        });
-      });
-
-      container.querySelectorAll('input[data-modal-mins]').forEach(inp => {
-        inp.addEventListener('change', (e) => {
-          const idx = parseInt(e.target.dataset.modalMins, 10);
-          const val = Math.max(1, parseInt(e.target.value, 10) || 1);
-          activeList.tasks[idx].mins = val;
-          saveAllLists();
-          renderRoutineTable();
-        });
-      });
-
-      container.querySelectorAll('button[data-move-up]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const idx = parseInt(e.target.dataset.moveUp, 10);
-          if (idx <= 0) return;
-          const temp = activeList.tasks[idx - 1];
-          activeList.tasks[idx - 1] = activeList.tasks[idx];
-          activeList.tasks[idx] = temp;
-          saveAllLists();
-          renderModalContent();
-          renderRoutineTable();
-        });
-      });
-
-      container.querySelectorAll('button[data-move-down]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const idx = parseInt(e.target.dataset.moveDown, 10);
-          if (idx >= activeList.tasks.length - 1) return;
-          const temp = activeList.tasks[idx + 1];
-          activeList.tasks[idx + 1] = activeList.tasks[idx];
-          activeList.tasks[idx] = temp;
-          saveAllLists();
-          renderModalContent();
-          renderRoutineTable();
-        });
-      });
-
-      container.querySelectorAll('button[data-modal-del]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const idx = parseInt(e.target.dataset.modalDel, 10);
-          if (activeList.tasks.length <= 1) {
-            showToast('每個清單至少保留一個項目');
-            return;
-          }
-          activeList.tasks.splice(idx, 1);
-          saveAllLists();
-          renderModalContent();
-          renderRoutineTable();
-        });
-      });
-    }
-
-    // --- Theme Cycling ---
-    function applyTheme(index, announce = false) {
-      state.themeIndex = index % THEMES.length;
-      const theme = THEMES[state.themeIndex];
-      document.body.setAttribute('data-theme', theme.id);
-      document.getElementById('theme-color-meta').setAttribute('content', theme.color);
-      localStorage.setItem('routine_theme_v3', theme.id);
-      if (announce) showToast(`主題: ${theme.label}`);
-    }
-
-    // --- Event Listeners ---
-    document.getElementById('voice-toggle-btn').addEventListener('click', () => {
-      state.voiceEnabled = !state.voiceEnabled;
-      localStorage.setItem('routine_voice_enabled_v3', String(state.voiceEnabled));
-      updateVoiceToggleUI();
-
-      if (state.voiceEnabled) {
-        startSilentAudioKeepAlive();
-        playGentleChime();
-        speakCantoneseAnnouncement('已開啟粵語提示');
-        showToast('🔊 已開啟提示音及粵語語音播報');
-      } else {
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-        showToast('🔇 已關閉語音提示');
-      }
+  /* Editor */
+  let editBuffer = [];
+  function createList() {
+    const id = 'l_' + Date.now();
+    state.lists.push({
+      id,
+      name: `清單 ${state.lists.length + 1}`,
+      wakeMins: 8 * 60,
+      tasks: [{ name: '刷牙洗面', mins: 5 }, { name: '執袋出門', mins: 5 }]
     });
+    state.activeId = id;
+    save();
+    render();
+    openEditor();
+  }
 
-    document.getElementById('test-voice-btn').addEventListener('click', () => {
-      startSilentAudioKeepAlive();
-      const schedule = computeSchedule();
-      const sample = schedule.items[6] || schedule.items[0];
-      if (sample) {
-        triggerStepNotification(sample.name, sample.mins, false);
-        showToast(`🔔 試聽：下一個項目：${sample.name}，${sample.mins} 分鐘`);
-      }
+  function openEditor() {
+    const l = currentList();
+    document.getElementById('listNameInput').value = l.name;
+    editBuffer = l.tasks.map(t => ({ ...t }));
+    renderEditRows();
+    document.getElementById('editorModal').classList.add('open');
+  }
+
+  function closeEditor() {
+    document.getElementById('editorModal').classList.remove('open');
+  }
+
+  function renderEditRows() {
+    const box = document.getElementById('editorRows');
+    box.innerHTML = '';
+    editBuffer.forEach((t, i) => {
+      const r = document.createElement('div');
+      r.className = 'edit-row';
+      r.innerHTML = `
+        <input class="edit-input" value="${t.name}" onchange="editBuffer[${i}].name=this.value" />
+        <input class="edit-input" type="number" min="1" max="180" value="${t.mins}" onchange="editBuffer[${i}].mins=Math.max(1,Number(this.value))" />
+        <button class="icon-btn" onclick="moveStep(${i},-1)">↑</button>
+        <button class="icon-btn" onclick="moveStep(${i},1)">↓</button>
+        <button class="icon-btn" style="color:#dc2626;" onclick="delStep(${i})">✕</button>
+      `;
+      box.appendChild(r);
     });
+  }
 
-    // Forward Calculation: Changing 起床時間 recalculates 出門時間
-    document.getElementById('wakeup-input').addEventListener('change', (e) => {
-      if (!e.target.value) return;
-      const activeList = getActiveList();
-      activeList.wakeTimeStr = e.target.value;
-      saveAllLists();
-      state.lastTrackedPhaseKey = null;
-      renderRoutineTable();
-      const schedule = computeSchedule();
-      showToast(`起床 ${formatSecondsTo12Hour(schedule.wakeStartSec)} → 出門 ${schedule.leaveFormatted}`);
-    });
+  function moveStep(i, d) {
+    const j = i + d;
+    if (j < 0 || j >= editBuffer.length) return;
+    [editBuffer[i], editBuffer[j]] = [editBuffer[j], editBuffer[i]];
+    renderEditRows();
+  }
 
-    // Backward Calculation: Changing 出門時間 recalculates 起床時間
-    document.getElementById('leave-time-input').addEventListener('change', (e) => {
-      if (!e.target.value) return;
-      const activeList = getActiveList();
-      const schedule = computeSchedule();
-      const desiredLeaveSec = parseTimeToSecondsSinceMidnight(e.target.value);
-      const calculatedWakeSec = desiredLeaveSec - schedule.totalMins * 60;
-      activeList.wakeTimeStr = secondsToHHMM24(calculatedWakeSec);
-      saveAllLists();
-      state.lastTrackedPhaseKey = null;
-      renderRoutineTable();
-      showToast(`目標出門 ${formatSecondsTo12Hour(desiredLeaveSec)} → 需於 ${formatSecondsTo12Hour(calculatedWakeSec)} 起床`);
-    });
+  function delStep(i) {
+    if (editBuffer.length <= 1) return;
+    editBuffer.splice(i, 1);
+    renderEditRows();
+  }
 
-    document.getElementById('start-now-btn').addEventListener('click', () => {
-      engageWakeLock(false);
-      const activeList = getActiveList();
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      activeList.wakeTimeStr = `${hh}:${mm}`;
-      saveAllLists();
-      state.lastTrackedPhaseKey = null;
-      renderRoutineTable();
-      if (state.voiceEnabled && activeList.tasks[0]) {
-        triggerStepNotification(activeList.tasks[0].name, activeList.tasks[0].mins, false);
-      }
-      showToast('▶ 已將起床時間設為現在，開始計時！');
-    });
+  function addStep() {
+    editBuffer.push({ name: '新項目', mins: 5 });
+    renderEditRows();
+  }
 
-    document.getElementById('demo-mid-btn').addEventListener('click', () => {
-      engageWakeLock(false);
-      const activeList = getActiveList();
-      // Simulate being 17 minutes into the routine (highlights 吃早餐 just like the screenshot)
-      const demoStart = new Date(Date.now() - 17 * 60 * 1000);
-      const hh = String(demoStart.getHours()).padStart(2, '0');
-      const mm = String(demoStart.getMinutes()).padStart(2, '0');
-      activeList.wakeTimeStr = `${hh}:${mm}`;
-      saveAllLists();
-      state.lastTrackedPhaseKey = null;
-      renderRoutineTable();
-      const sampleTask = activeList.tasks[6] || activeList.tasks[0];
-      if (state.voiceEnabled && sampleTask) {
-        triggerStepNotification(sampleTask.name, sampleTask.mins, false);
-      }
-      showToast('⚡ 預覽進行中：模擬已起床 17 分鐘');
-    });
+  function saveEditor() {
+    const l = currentList();
+    const n = document.getElementById('listNameInput').value.trim();
+    if (n) l.name = n;
+    l.tasks = editBuffer.filter(x => x.name.trim());
+    state.lastSpokenKey = null;
+    save();
+    closeEditor();
+    render();
+  }
 
-    document.getElementById('theme-btn').addEventListener('click', () => {
-      applyTheme(state.themeIndex + 1, true);
-    });
+  function deleteList() {
+    if (state.lists.length <= 1) return;
+    state.lists = state.lists.filter(x => x.id !== state.activeId);
+    state.activeId = state.lists[0].id;
+    save();
+    closeEditor();
+    render();
+  }
 
-    document.getElementById('wakelock-btn').addEventListener('click', () => {
-      engageWakeLock(true);
-    });
-
-    // Editor Modal Events
-    document.getElementById('open-editor-btn').addEventListener('click', openEditorModal);
-    document.getElementById('close-editor-btn').addEventListener('click', closeEditorModal);
-    document.getElementById('editor-modal').addEventListener('click', closeEditorModal);
-
-    document.getElementById('modal-list-name-input').addEventListener('input', (e) => {
-      const activeList = getActiveList();
-      activeList.name = e.target.value.trim() || '未命名清單';
-      saveAllLists();
-      renderListSwitcher();
-    });
-
-    document.getElementById('duplicate-list-btn').addEventListener('click', () => {
-      const activeList = getActiveList();
-      const copy = {
-        id: 'list-' + Date.now(),
-        name: `${activeList.name} (副本)`,
-        wakeTimeStr: activeList.wakeTimeStr,
-        tasks: JSON.parse(JSON.stringify(activeList.tasks))
-      };
-      state.lists.push(copy);
-      state.activeListId = copy.id;
-      saveAllLists();
-      renderListSwitcher();
-      renderModalContent();
-      renderRoutineTable();
-      showToast(`📋 已複製為「${copy.name}」`);
-    });
-
-    document.getElementById('delete-list-btn').addEventListener('click', () => {
-      if (state.lists.length <= 1) {
-        showToast('至少保留一個清單');
-        return;
-      }
-      const deletedName = getActiveList().name;
-      state.lists = state.lists.filter(l => l.id !== state.activeListId);
-      state.activeListId = state.lists[0].id;
-      state.lastTrackedPhaseKey = null;
-      saveAllLists();
-      renderListSwitcher();
-      renderModalContent();
-      renderRoutineTable();
-      showToast(`🗑 已刪除「${deletedName}」`);
-    });
-
-    document.getElementById('modal-add-step-btn').addEventListener('click', () => {
-      const activeList = getActiveList();
-      activeList.tasks.push({ id: Date.now(), name: '新項目', mins: 5 });
-      saveAllLists();
-      renderModalContent();
-      renderRoutineTable();
-    });
-
-    document.getElementById('modal-new-list-btn').addEventListener('click', () => {
-      createNewCustomList();
-    });
-
-    document.getElementById('modal-reset-all-btn').addEventListener('click', () => {
-      state.lists = createDefaultLists();
-      state.activeListId = state.lists[0].id;
-      state.lastTrackedPhaseKey = null;
-      saveAllLists();
-      renderListSwitcher();
-      renderModalContent();
-      renderRoutineTable();
-      showToast('↺ 已還原「平日」及「週末」預設清單');
-    });
-
-    // --- Initialize App ---
-    window.addEventListener('DOMContentLoaded', () => {
-      applyTheme(state.themeIndex, false);
-      updateVoiceToggleUI();
-      buildAnalogClockTicks();
-      renderListSwitcher();
-      renderRoutineTable();
-      engageWakeLock(false);
-
-      setInterval(updateLiveTracking, 250);
-    });
-  </script>
+  applyTheme();
+  updateVoiceUI();
+  requestWake(false);
+  render();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
